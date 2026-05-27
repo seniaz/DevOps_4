@@ -2,11 +2,11 @@
 
 ## Варіант (N = 14)
 
-| Параметр | Формула | Значення | Опис |
-|----------|---------|----------|------|
-| V2 | (14 % 2) + 1 | **1** | Конфігурація через аргументи CLI, MariaDB |
-| V3 | (14 % 3) + 1 | **3** | Simple Inventory |
-| V5 | (14 % 5) + 1 | **5** | Порт 5000 |
+| Параметр | Формула      | Значення | Опис                                      |
+| -------- | ------------ | -------- | ----------------------------------------- |
+| V2       | (14 % 2) + 1 | **1**    | Конфігурація через аргументи CLI, MariaDB |
+| V3       | (14 % 3) + 1 | **3**    | Simple Inventory                          |
+| V5       | (14 % 5) + 1 | **5**    | Порт 5000                                 |
 
 ## Архітектура
 
@@ -19,7 +19,7 @@
 ## Структура проєкту
 
 ```
-lab4/
+DevOps_4/
 ├── terraform/
 │   ├── main.tf
 │   ├── variables.tf
@@ -40,10 +40,25 @@ lab4/
 │   │   └── db.yml
 │   └── roles/
 │       ├── common/
+│       │   └── tasks/main.yml
 │       ├── users/
+│       │   ├── tasks/main.yml
+│       │   └── templates/operator_sudoers.j2
 │       ├── mariadb/
+│       │   ├── tasks/main.yml
+│       │   ├── templates/60-bind.cnf.j2
+│       │   └── handlers/main.yml
 │       ├── webapp/
+│       │   ├── tasks/main.yml
+│       │   ├── files/app.py
+│       │   ├── files/requirements.txt
+│       │   ├── templates/mywebapp.service.j2
+│       │   └── handlers/main.yml
 │       └── nginx/
+│           ├── tasks/main.yml
+│           ├── templates/mywebapp_nginx.conf.j2
+│           └── handlers/main.yml
+├── .gitignore
 └── README.md
 ```
 
@@ -103,13 +118,13 @@ curl -H "Accept: application/json" http://$WORKER_IP/items/1
 
 ## Користувачі
 
-| Користувач | ВМ | Права |
-|---|---|---|
-| ansible | Усі | sudo без пароля (cloud-init) |
-| teacher | Усі | sudo з паролем (12345678 → зміна) |
-| student | worker | sudo |
-| app | worker | системний, мінімальні права |
-| operator | worker | обмежений sudo |
+| Користувач | ВМ     | Права                             |
+| ---------- | ------ | --------------------------------- |
+| ansible    | Усі    | sudo без пароля (cloud-init)      |
+| teacher    | Усі    | sudo з паролем (12345678 → зміна) |
+| student    | worker | sudo                              |
+| app        | worker | системний, мінімальні права       |
+| operator   | worker | обмежений sudo                    |
 
 ## Знищення
 
